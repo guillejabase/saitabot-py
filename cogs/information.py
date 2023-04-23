@@ -6,17 +6,50 @@ import discord
 if TYPE_CHECKING:
     from main import Saita
 
-class Information(commands.Cog):
-    """This Cog has commands that show information from different sources."""
 
-    def __init__(self, bot: Saita):
+class Information(commands.Cog):
+    'This Cog has commands that show information from different sources.'
+
+    def __init__(
+        self,
+        bot: Saita
+    ):
         self.bot: Saita = bot
 
-    @discord.app_commands.command(name = "ping", description = "Check the latency of the bot.")
-    async def ping(self, interaction: discord.Interaction):
-        embed = discord.Embed(color = 2829617, description = f"**Latency:** {round(self.bot.latency * 1000)} ms.")
+    @discord.app_commands.command(
+        name='ping',
+        description='Check the latency of the bot.'
+    )
+    async def ping(
+        self,
+        interaction: discord.Interaction
+    ):
+        embed = discord.Embed(
+            color=2829617,
+            description=f'**Latency:** {round(self.bot.latency * 1000)} ms.'
+        )
 
-        await interaction.response.send_message(embed = embed)
+        await interaction.response.send_message(embed=embed)
+
+    @discord.app_commands.command(
+        name='about',
+        description='About me.'
+    )
+    async def about(
+        self,
+        interaction: discord.Interaction
+    ):
+        embed = discord.Embed(
+            color=2829617,
+            description=f'''
+**Developer:** Willyy#9111
+**Language:** Python
+**Library:** discord.py v2.2.2
+'''
+        )
+
+        await interaction.response.send_message(embed=embed)
+
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Information(bot))
