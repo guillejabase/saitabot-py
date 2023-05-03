@@ -3,16 +3,18 @@ import discord
 from discord.ext import commands
 from assets import config
 
+
 class SaitaTree(discord.app_commands.CommandTree):
+    color = 2829617
+
     async def on_error(
         self,
         interaction: discord.Interaction,
         error: discord.app_commands.AppCommandError
     ):
-        if isinstance(
-            error,
-            discord.app_commands.BotMissingPermissions
-        ):
+        embed = discord.Embed(color=self.color)
+
+        if isinstance(error, discord.app_commands.BotMissingPermissions):
             missing = [
                 perm
                 .replace('_', ' ')
@@ -29,17 +31,15 @@ class SaitaTree(discord.app_commands.CommandTree):
             else:
                 permissions = ' and '.join(missing)
 
-            embed = discord.Embed(
-                color=2829617,
-                description=f'I need **{permissions}** permissions to run this command.'
-            )
+            embed.description = f'I need **{permissions}** permissions to run this command.'
 
             await interaction.response.send_message(embed=embed)
+        elif isinstance(error, discord.app_commands.CheckFailure):
+            embed.description = f'**You\'re not my developer.**'
+
+            await interaction.response.send_message(embed=embed, ephemeral=True)
         else:
-            await super().on_error(
-                interaction,
-                error
-            )
+            await super().on_error(interaction, error)
 
 
 class Saita(commands.Bot):
@@ -62,7 +62,7 @@ class Saita(commands.Bot):
         await bot.tree.sync()
 
     async def on_ready(self):
-        print(f'{self.user} online.')
+        print(f'\x1B[1m\x1B[32m{self.user} ready.\x1B[0m')
 
 
 bot = Saita()

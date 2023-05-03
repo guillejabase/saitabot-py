@@ -9,19 +9,18 @@ if TYPE_CHECKING:
 
 
 class Fun(commands.Cog):
-    '''This Cog has commands made for fun and enjoyment.'''
+    'This Cog has commands made for fun and enjoyment.'
 
-    def __init__(
-        self,
-        bot: Saita
-    ):
+    def __init__(self, bot: Saita):
         self.bot: Saita = bot
 
     @discord.app_commands.command(
         name='eightball',
         description='Ask the magic 8 ball a question.'
     )
-    @discord.app_commands.describe(question='Type a question.')
+    @discord.app_commands.describe(
+        question='Type a question.'
+    )
     async def eightball(
         self,
         interaction: discord.Interaction,
@@ -54,10 +53,8 @@ class Fun(commands.Cog):
 
         embed = discord.Embed(
             color=2829617,
-            description=f'''
-**Question:** {question if question.endswith('?') else f'{question}?'}
-**Answer:** {random.choice(answers)}
-'''
+            description=f'''**Question:** {question if question.endswith('?') else f'{question}?'}
+**Answer:** {random.choice(answers)}'''
         )
 
         await interaction.response.send_message(embed=embed)
@@ -96,14 +93,11 @@ class Fun(commands.Cog):
         input: discord.app_commands.Range[str, 0, 500]
     ):
         number = round(random.uniform(1, 5), 1)
-        text = 'stars'
-
-        if number < 1.1:
-            text = 'star'
+        text = 'stars' if number < 1.1 else 'star'
 
         embed = discord.Embed(
             color=2829617,
-            description=f'I rate {input} **{number} {text}**.'
+            description=f'**I rate** {input} **{number} {text}.**'
         )
 
         await interaction.response.send_message(embed=embed)
